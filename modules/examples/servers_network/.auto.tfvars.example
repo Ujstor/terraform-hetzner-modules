@@ -1,0 +1,4 @@
+hcloud_token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+cloudflare_api_token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+cloudflare_zone_id   = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+

@@ -1,8 +1,9 @@
+locals {
+  server_ips = { for server in data.hcloud_servers.runing_servers.servers : server.name => server.ipv4_address }
+}
+
 module "cluster" {
   source = "../../modules/cluster/"
-
-  ssh_key_name = "cluster_hetzner_key"
-  ssh_key_path = ".ssh"
 
   server_config = {
     server-1 = {
@@ -13,7 +14,6 @@ module "cluster" {
       ipv6_enabled = false
       subnet_id    = module.network_config.subnet_id["subnet-1"].subnet_id
       subnet_ip    = "10.0.1.1"
-      firewall_ids = [module.firewall.firewall_ids["default"].id]
     }
     server-2 = {
       location     = "nbg1"
@@ -23,7 +23,6 @@ module "cluster" {
       ipv6_enabled = false
       subnet_id    = module.network_config.subnet_id["subnet-1"].subnet_id
       subnet_ip    = "10.0.1.2"
-      firewall_ids = [module.firewall.firewall_ids["default"].id]
     }
     server-3 = {
       location     = "hel1"
@@ -33,7 +32,6 @@ module "cluster" {
       ipv6_enabled = false
       subnet_id    = module.network_config.subnet_id["subnet-2"].subnet_id
       subnet_ip    = "10.0.2.1"
-      firewall_ids = [module.firewall.firewall_ids["default"].id]
     }
     server-4 = {
       location     = "hel1"
@@ -43,7 +41,6 @@ module "cluster" {
       ipv6_enabled = false
       subnet_id    = module.network_config.subnet_id["subnet-2"].subnet_id
       subnet_ip    = "10.0.2.2"
-      firewall_ids = [module.firewall.firewall_ids["default"].id]
     }
     server-5 = {
       location     = "fsn1"
@@ -53,7 +50,6 @@ module "cluster" {
       ipv6_enabled = false
       subnet_id    = module.network_config.subnet_id["subnet-3"].subnet_id
       subnet_ip    = "10.0.3.1"
-      firewall_ids = [module.firewall.firewall_ids["default"].id]
     }
     server-6 = {
       location     = "nbg1"
@@ -63,36 +59,44 @@ module "cluster" {
       ipv6_enabled = false
       subnet_id    = module.network_config.subnet_id["subnet-3"].subnet_id
       subnet_ip    = "10.0.3.2"
-      firewall_ids = [module.firewall.firewall_ids["default"].id]
     }
   }
-}
-
-
-module "cloudflare_record" {
-  source = "../../modules/network/cloudflare_record/"
 
   cloudflare_record = {
-    foo = {
+    app_foo = {
       zone_id = var.cloudflare_zone_id
       name    = "foo"
-      values   = module.cluster.server_status.server-1.ip
+      values   = local.server_ips["server-1"] 
       type    = "A"
       ttl     = 1
       proxied = true
     }
-    bar = {
+    app_bar = {
       zone_id = var.cloudflare_zone_id
       name    = "bar"
-      values   = module.cluster.server_status.server-2.ip
+      values   = local.server_ips["server-2"] 
+      type    = "A"
+      ttl     = 1
+      proxied = true
+    }
+    app_buu = {
+      zone_id = var.cloudflare_zone_id
+      name    = "@"
+      values   = local.server_ips["server-3"] 
+      type    = "A"
+      ttl     = 1
+      proxied = true
+    }
+    app_test= {
+      zone_id = var.cloudflare_zone_id
+      name    = "app-bar"
+      values   = local.server_ips["server-4"] 
       type    = "A"
       ttl     = 1
       proxied = true
     }
   }
-    depends_on = [module.cluster]
 }
-
 module "network_config" {
   source = "../../modules/network/vpc_subnet/"
 
@@ -116,53 +120,3 @@ module "network_config" {
   network_type = "cloud"
   network_zone = "eu-central"
 }
-
-module "firewall" {
-  source = "../../modules/network/firewall"
-
-  firewalls = {
-    default = {
-      labels = {
-        type = "firewall-1"
-      }
-      name = "firewall-default"
-
-      rules = [
-        {
-          direction = "in"
-          port      = "22"
-          protocol  = "tcp"
-        },
-        {
-          destination_ips = ["0.0.0.0/0"]
-          direction       = "out"
-          port            = "22"
-          protocol        = "tcp"
-        },
-        {
-          direction = "in"
-          port      = "80"
-          protocol  = "tcp"
-        },
-        {
-          destination_ips = ["0.0.0.0/0"]
-          direction       = "out"
-          port            = "80"
-          protocol        = "tcp"
-        },
-        {
-          direction = "in"
-          port      = "443"
-          protocol  = "tcp"
-        },
-        {
-          destination_ips = ["0.0.0.0/0"]
-          direction       = "out"
-          port            = "443"
-          protocol        = "tcp"
-        },
-      ]
-    }
-  }
-}
-

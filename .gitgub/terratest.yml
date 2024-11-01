@@ -1,0 +1,25 @@
+name: terraftest
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  tflint:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+    - uses: actions/setup-go@v5
+      name: Setup Go
+      with:
+        go-version: '1.23.2'
+
+    - uses: actions/checkout@v4
+      name: Checkout source code
+
+    - name: Run test
+      run: cd test && go test -v -timeout 5m

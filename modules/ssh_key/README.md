@@ -34,5 +34,5 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_hcloud_ssh_key_id"></a> [hcloud\_ssh\_key\_id](#output\_hcloud\_ssh\_key\_id) | Pass Hcloud ssh key id into controler and workers |
+| <a name="output_hcloud_ssh_key_id"></a> [hcloud\_ssh\_key\_id](#output\_hcloud\_ssh\_key\_id) | Pass Hcloud ssh key id into server |
 | <a name="output_public_key"></a> [public\_key](#output\_public\_key) | Public key |

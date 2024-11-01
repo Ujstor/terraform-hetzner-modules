@@ -4,6 +4,6 @@ output "public_key" {
 }
 
 output "hcloud_ssh_key_id" {
-  description = "Pass Hcloud ssh key id into controler and workers"
+  description = "Pass Hcloud ssh key id into server"
   value       = hcloud_ssh_key.default.id
 }

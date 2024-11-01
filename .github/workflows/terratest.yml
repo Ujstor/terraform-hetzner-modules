@@ -1,4 +1,4 @@
-name: terra_test
+name: terratest
 on:
   push:
     branches: [ master ]
@@ -22,4 +22,11 @@ jobs:
       name: Checkout source code
 
     - name: Run test
-      run: cd test && go test -v -timeout 5m
+      env:
+        HCLOUD_TOKEN: ${{ secrets.HCLOUD_TOKEN }}
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+      run: |
+        cd test
+        go mod download
+        go test -v -timeout 5m

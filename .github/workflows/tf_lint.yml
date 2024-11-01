@@ -1,4 +1,4 @@
-name: terraform-lint
+name: terraform_lint
 on:
   push:
     branches: [ master ]

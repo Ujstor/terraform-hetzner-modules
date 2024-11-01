@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  tflint:
+  terratest:
     runs-on: ${{ matrix.os }}
 
     strategy:

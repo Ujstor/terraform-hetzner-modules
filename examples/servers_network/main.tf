@@ -5,7 +5,7 @@ module "ssh_key_test" {
   ssh_key_path = ".ssh"
 }
 
-module "cluster" {
+module "servers" {
   source = "../../modules/server/"
 
   server_config = {
@@ -15,9 +15,9 @@ module "cluster" {
       labels       = "servers-1"
       ipv4_enabled = true
       ipv6_enabled = false
-      subnet_id    = module.vpc_subnets.subnet_id["subnet-1"].subnet_id
+      subnet_id    = module.vpc_subnets.subnet_id.subnet-1.subnet_id
       subnet_ip    = "10.0.1.1"
-      firewall_ids = [module.firewall.firewall_ids["default"].id]
+      firewall_ids = [module.firewall.firewall_ids.ssh.id, module.firewall.firewall_ids.https.id]
     }
     server-2 = {
       location     = "hel1"
@@ -25,9 +25,9 @@ module "cluster" {
       labels       = "servers-1"
       ipv4_enabled = true
       ipv6_enabled = false
-      subnet_id    = module.vpc_subnets.subnet_id["subnet-1"].subnet_id
+      subnet_id    = module.vpc_subnets.subnet_id.subnet-1.subnet_id
       subnet_ip    = "10.0.1.2"
-      firewall_ids = [module.firewall.firewall_ids["default"].id]
+      firewall_ids = [module.firewall.firewall_ids.ssh.id, module.firewall.firewall_ids.https.id]
     }
     server-3 = {
       location     = "fsn1"
@@ -35,9 +35,9 @@ module "cluster" {
       labels       = "servers-2"
       ipv4_enabled = true
       ipv6_enabled = false
-      subnet_id    = module.vpc_subnets.subnet_id["subnet-2"].subnet_id
+      subnet_id    = module.vpc_subnets.subnet_id.subnet-2.subnet_id
       subnet_ip    = "10.0.2.1"
-      firewall_ids = [module.firewall.firewall_ids["default"].id]
+      firewall_ids = [module.firewall.firewall_ids.ssh.id, module.firewall.firewall_ids.https.id]
     }
     server-4 = {
       location     = "hel1"
@@ -45,9 +45,10 @@ module "cluster" {
       labels       = "servers-2"
       ipv4_enabled = true
       ipv6_enabled = false
-      subnet_id    = module.vpc_subnets.subnet_id["subnet-2"].subnet_id
+      subnet_id    = module.vpc_subnets.subnet_id.subnet-2.subnet_id
+      subnet_id    = module.vpc_subnets.subnet_id.subnet-2.subnet_id
       subnet_ip    = "10.0.3.2"
-      firewall_ids = [module.firewall.firewall_ids["default"].id]
+      firewall_ids = [module.firewall.firewall_ids.ssh.id, module.firewall.firewall_ids.https.id]
     }
     server-5 = {
       location     = "fsn1"
@@ -55,9 +56,9 @@ module "cluster" {
       labels       = "servers-3"
       ipv4_enabled = true
       ipv6_enabled = false
-      subnet_id    = module.vpc_subnets.subnet_id["subnet-3"].subnet_id
+      subnet_id    = module.vpc_subnets.subnet_id.subnet-3.subnet_id
       subnet_ip    = "10.0.3.1"
-      firewall_ids = [module.firewall.firewall_ids["default"].id]
+      firewall_ids = [module.firewall.firewall_ids.ssh.id, module.firewall.firewall_ids.https.id]
     }
     server-6 = {
       location     = "nbg1"
@@ -65,9 +66,9 @@ module "cluster" {
       labels       = "servers-3"
       ipv4_enabled = true
       ipv6_enabled = false
-      subnet_id    = module.vpc_subnets.subnet_id["subnet-3"].subnet_id
+      subnet_id    = module.vpc_subnets.subnet_id.subnet-3.subnet_id
       subnet_ip    = "10.0.3.2"
-      firewall_ids = [module.firewall.firewall_ids["default"].id]
+      firewall_ids = [module.firewall.firewall_ids.ssh.id, module.firewall.firewall_ids.https.id]
     }
   }
 
@@ -87,7 +88,7 @@ module "cloudflare_record" {
     foo = {
       zone_id = var.cloudflare_zone_id
       name    = "foo"
-      values   = module.cluster.server_info.server-1.ip
+      content   = module.servers.server_info.server-1.ip
       type    = "A"
       ttl     = 1
       proxied = true
@@ -95,13 +96,13 @@ module "cloudflare_record" {
     bar = {
       zone_id = var.cloudflare_zone_id
       name    = "bar"
-      values   = module.cluster.server_info.server-2.ip
+      content   = module.servers.server_info.server-2.ip
       type    = "A"
       ttl     = 1
       proxied = true
     }
   }
-    depends_on = [module.cluster]
+    depends_on = [module.servers]
 }
 
 module "vpc_subnets" {
@@ -132,11 +133,11 @@ module "firewall" {
   source = "../../modules/network/firewall"
 
   firewalls = {
-    default = {
+    ssh = {
       labels = {
-        type = "firewall-1"
+        type = "ssh-fw"
       }
-      name = "firewall-default"
+      name = "firewall-ssh"
 
       rules = [
         {
@@ -150,6 +151,15 @@ module "firewall" {
           port            = "22"
           protocol        = "tcp"
         },
+      ]
+    }
+    https = {
+      labels = {
+        type = "http-https-fw"
+      }
+      name = "firewall-https"
+
+      rules = [
         {
           direction = "in"
           port      = "80"

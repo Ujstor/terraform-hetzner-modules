@@ -12,7 +12,7 @@ module "cluster" {
       labels       = "servers-1"
       ipv4_enabled = true
       ipv6_enabled = false
-      subnet_id    = module.network_config.subnet_id["subnet-1"].subnet_id
+      subnet_id    = module.network_config.subnet_id.subnet-1.subnet_id
       subnet_ip    = "10.0.1.1"
     }
     server-2 = {
@@ -21,7 +21,7 @@ module "cluster" {
       labels       = "servers-1"
       ipv4_enabled = true
       ipv6_enabled = false
-      subnet_id    = module.network_config.subnet_id["subnet-1"].subnet_id
+      subnet_id    = module.network_config.subnet_id.subnet-1.subnet_id
       subnet_ip    = "10.0.1.2"
     }
     server-3 = {
@@ -30,7 +30,7 @@ module "cluster" {
       labels       = "servers-2"
       ipv4_enabled = true
       ipv6_enabled = false
-      subnet_id    = module.network_config.subnet_id["subnet-2"].subnet_id
+      subnet_id    = module.network_config.subnet_id.subnet-2.subnet_id
       subnet_ip    = "10.0.2.1"
     }
     server-4 = {
@@ -39,7 +39,7 @@ module "cluster" {
       labels       = "servers-2"
       ipv4_enabled = true
       ipv6_enabled = false
-      subnet_id    = module.network_config.subnet_id["subnet-2"].subnet_id
+      subnet_id    = module.network_config.subnet_id.subnet-2.subnet_id
       subnet_ip    = "10.0.2.2"
     }
     server-5 = {
@@ -48,7 +48,7 @@ module "cluster" {
       labels       = "servers-3"
       ipv4_enabled = true
       ipv6_enabled = false
-      subnet_id    = module.network_config.subnet_id["subnet-3"].subnet_id
+      subnet_id    = module.network_config.subnet_id.subnet-3.subnet_id
       subnet_ip    = "10.0.3.1"
     }
     server-6 = {
@@ -57,16 +57,21 @@ module "cluster" {
       labels       = "servers-3"
       ipv4_enabled = true
       ipv6_enabled = false
-      subnet_id    = module.network_config.subnet_id["subnet-3"].subnet_id
+      subnet_id    = module.network_config.subnet_id.subnet-3.subnet_id
       subnet_ip    = "10.0.3.2"
     }
   }
+
+}
+
+module "cloudflare_record" {
+  source = "../../modules/network/cloudflare_record/"
 
   cloudflare_record = {
     app_foo = {
       zone_id = var.cloudflare_zone_id
       name    = "foo"
-      values   = local.server_ips["server-1"] 
+      content   = local.server_ips["server-1"] 
       type    = "A"
       ttl     = 1
       proxied = true
@@ -74,7 +79,7 @@ module "cluster" {
     app_bar = {
       zone_id = var.cloudflare_zone_id
       name    = "bar"
-      values   = local.server_ips["server-2"] 
+      content   = local.server_ips["server-3"] 
       type    = "A"
       ttl     = 1
       proxied = true
@@ -82,7 +87,7 @@ module "cluster" {
     app_buu = {
       zone_id = var.cloudflare_zone_id
       name    = "@"
-      values   = local.server_ips["server-3"] 
+      content   = local.server_ips["server-4"] 
       type    = "A"
       ttl     = 1
       proxied = true
@@ -90,13 +95,16 @@ module "cluster" {
     app_test= {
       zone_id = var.cloudflare_zone_id
       name    = "app-bar"
-      values   = local.server_ips["server-4"] 
+      content   = local.server_ips["server-5"] 
       type    = "A"
       ttl     = 1
       proxied = true
     }
   }
+
+    depends_on = [module.cluster]
 }
+
 module "network_config" {
   source = "../../modules/network/vpc_subnet/"
 

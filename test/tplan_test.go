@@ -10,7 +10,7 @@ import (
 
 const (
 	server_plan          = "Plan: 3 to add, 0 to change, 0 to destroy."
-	servers_network_plan = "Plan: 21 to add, 0 to change, 0 to destroy."
+	servers_network_plan = "Plan: 22 to add, 0 to change, 0 to destroy."
 	cluster_plan         = "Plan: 23 to add, 0 to change, 0 to destroy."
 )
 

@@ -30,30 +30,18 @@ variable "use_network" {
   default     = true
 }
 
-variable "cloudflare_record" {
-  description = "Cloudflare record configuration"
-  type = map(object({
-    zone_id = optional(string)
-    name    = optional(string)
-    values   = optional(string)
-    type    = optional(string)
-    ttl     = optional(number)
-    proxied = optional(bool)
-  }))
-  default = {}
-}
-
 variable "firewall_config" {
   description = "A map of firewalls to create"
   type = map(object({
-    labels = map(string)
     name   = string
+    labels = optional(map(string), {})
     rules = list(object({
-      destination_ips = optional(list(string), [])
       direction       = string
-      port            = string
-      protocol        = string
-      source_ips      = optional(list(string), ["0.0.0.0/0", "::/0"])
+      protocol       = string
+      port          = string
+      source_ips     = optional(list(string))
+      destination_ips = optional(list(string))
+      description    = optional(string)
     }))
   }))
   default = {

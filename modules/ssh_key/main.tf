@@ -17,4 +17,3 @@ resource "hcloud_ssh_key" "default" {
 
   depends_on = [tls_private_key.ssh_key]
 }
-

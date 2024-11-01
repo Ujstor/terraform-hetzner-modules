@@ -24,7 +24,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_firewalls"></a> [firewalls](#input\_firewalls) | A map of firewalls to create | <pre>map(object({<br/>    labels = map(string)<br/>    name   = string<br/>    rules = list(object({<br/>      destination_ips = optional(list(string), [])<br/>      direction       = string<br/>      port            = string<br/>      protocol        = string<br/>      source_ips      = optional(list(string), ["0.0.0.0/0", "::/0"])<br/>    }))<br/>  }))</pre> | n/a | yes |
+| <a name="input_firewalls"></a> [firewalls](#input\_firewalls) | A map of firewalls to create | <pre>map(object({<br/>    name   = string<br/>    labels = optional(map(string), {})<br/>    rules = list(object({<br/>      direction       = string<br/>      protocol       = string<br/>      port          = string<br/>      source_ips     = optional(list(string))<br/>      destination_ips = optional(list(string))<br/>      description    = optional(string)<br/>    }))<br/>  }))</pre> | n/a | yes |
 
 ## Outputs
 

@@ -18,9 +18,3 @@ module "firewall" {
 
   firewalls = var.firewall_config
 }
-
-module "cloudflar" {
-  source = "../network/cloudflare_record"
-
-  cloudflare_record = var.cloudflare_record
-}

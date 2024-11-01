@@ -3,7 +3,7 @@ variable "cloudflare_record" {
   type = map(object({
     zone_id = string
     name    = string
-    values   = string
+    content = string
     type    = string
     ttl     = number
     proxied = bool

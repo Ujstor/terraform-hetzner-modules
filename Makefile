@@ -1,3 +1,4 @@
+all: d t
 
 tdi terraform-docs:
 	@if -v terraform-docs > /dev/null 2>&1; then \

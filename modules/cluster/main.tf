@@ -10,7 +10,7 @@ module "server" {
   hcloud_ssh_key_id = [module.ssh_key.hcloud_ssh_key_id]
   use_network       = var.use_network
   depends_on        = [module.ssh_key]
-  firewall_ids      = [for f in module.firewall.firewall_ids : f.id]
+  firewall_ids      = module.firewall.firewall_ids_list
 }
 
 module "firewall" {

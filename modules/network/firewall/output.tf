@@ -6,3 +6,7 @@ output "firewall_ids" {
     }
   }
 }
+
+output "firewall_ids_list" {
+  value = [for key, _ in var.firewalls : hcloud_firewall.default[key].id]
+}

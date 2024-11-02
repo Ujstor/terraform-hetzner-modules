@@ -44,48 +44,6 @@ variable "firewall_config" {
       description    = optional(string)
     }))
   }))
-  default = {
-    default_firewall = {
-      labels = {
-        type = "firewall-default"
-      }
-      name = "default-firewall"
-      rules = [
-        {
-          direction = "in"
-          port      = "22"
-          protocol  = "tcp"
-        },
-        {
-          destination_ips = ["0.0.0.0/0"]
-          direction       = "out"
-          port            = "22"
-          protocol        = "tcp"
-        },
-        {
-          direction = "in"
-          port      = "80"
-          protocol  = "tcp"
-        },
-        {
-          destination_ips = ["0.0.0.0/0"]
-          direction       = "out"
-          port            = "80"
-          protocol        = "tcp"
-        },
-        {
-          direction = "in"
-          port      = "443"
-          protocol  = "tcp"
-        },
-        {
-          destination_ips = ["0.0.0.0/0"]
-          direction       = "out"
-          port            = "443"
-          protocol        = "tcp"
-        },
-      ]
-    }
-  }
+  default = {}
 }
 

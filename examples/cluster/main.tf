@@ -61,7 +61,6 @@ module "cluster" {
       subnet_ip    = "10.0.3.2"
     }
   }
-
 }
 
 module "volumes" {

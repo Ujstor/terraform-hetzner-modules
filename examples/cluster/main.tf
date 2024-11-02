@@ -61,6 +61,60 @@ module "cluster" {
       subnet_ip    = "10.0.3.2"
     }
   }
+    # Aditional firewall rules except the default ones (22, 80, 443)
+    firewall_config = {
+    ui = {
+      labels = {
+        type = "ui"
+      }
+      name = "ui"
+
+      rules = [
+        {
+          direction = "in"
+          port      = "8000"
+          protocol  = "tcp"
+        },
+        {
+          destination_ips = ["0.0.0.0/0"]
+          direction       = "out"
+          port            = "8000"
+          protocol        = "tcp"
+        },
+      ]
+    }
+    websocket= {
+      labels = {
+        type = "websocket"
+      }
+      name = "websocket"
+
+      rules = [
+        {
+          direction = "in"
+          port      = "6001"
+          protocol  = "tcp"
+        },
+        {
+          destination_ips = ["0.0.0.0/0"]
+          direction       = "out"
+          port            = "6001"
+          protocol        = "tcp"
+        },
+        {
+          direction = "in"
+          port      = "6002"
+          protocol  = "tcp"
+        },
+        {
+          destination_ips = ["0.0.0.0/0"]
+          direction       = "out"
+          port            = "6002"
+          protocol        = "tcp"
+        },
+      ]
+    }
+  }
 }
 
 module "volumes" {

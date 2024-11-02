@@ -13,7 +13,7 @@ const (
 	firewall_plan        = "Plan: 4 to add, 0 to change, 0 to destroy."
 	servers_network_plan = "Plan: 22 to add, 0 to change, 0 to destroy."
 	servers_volumes_plan = "Plan: 11 to add, 0 to change, 0 to destroy."
-	cluster_plan         = "Plan: 35 to add, 0 to change, 0 to destroy."
+	cluster_plan         = "Plan: 37 to add, 0 to change, 0 to destroy."
 
 	server_path          = "../examples/server/"
 	firewall_path        = "../examples/firewall/"

@@ -31,3 +31,4 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_firewall_ids"></a> [firewall\_ids](#output\_firewall\_ids) | n/a |
+| <a name="output_firewall_ids_list"></a> [firewall\_ids\_list](#output\_firewall\_ids\_list) | n/a |

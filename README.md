@@ -195,7 +195,7 @@ No modules.
 | <a name="input_firewall_ids"></a> [firewall\_ids](#input\_firewall\_ids) | Firewall IDs to pass to the server | `list(string)` | `null` | no |
 | <a name="input_hcloud_ssh_key_id"></a> [hcloud\_ssh\_key\_id](#input\_hcloud\_ssh\_key\_id) | ID of the SSH key created and used for Hetzner cloud and serves | `list(string)` | n/a | yes |
 | <a name="input_os_type"></a> [os\_type](#input\_os\_type) | OS image to use for the server | `string` | `"debian-12"` | no |
-| <a name="input_server_config"></a> [server\_config](#input\_server\_config) | Config for each created server | <pre>map(object({<br/>    location     = string<br/>    server_type  = string<br/>    labels       = optional(string)<br/>    ipv4_enabled = bool<br/>    ipv6_enabled = bool<br/>    subnet_id    = optional(string)<br/>    subnet_ip    = optional(string)<br/>    firewall_ids = optional(list(string))<br/>  }))</pre> | n/a | yes |
+| <a name="input_server_config"></a> [server\_config](#input\_server\_config) | Config for each created server | <pre>map(object({<br/>    location     = string<br/>    server_type  = string<br/>    labels       = optional(string)<br/>    ipv4_enabled = optional(bool)<br/>    ipv6_enabled = optional(bool)<br/>    subnet_id    = optional(string)<br/>    subnet_ip    = optional(string)<br/>    firewall_ids = optional(list(string))<br/>  }))</pre> | n/a | yes |
 | <a name="input_use_network"></a> [use\_network](#input\_use\_network) | Use VPC and subnets | `bool` | `false` | no |
 
 ## Outputs
@@ -246,6 +246,44 @@ No modules.
 |------|-------------|
 | <a name="output_hcloud_ssh_key_id"></a> [hcloud\_ssh\_key\_id](#output\_hcloud\_ssh\_key\_id) | Pass Hcloud ssh key id into server |
 | <a name="output_public_key"></a> [public\_key](#output\_public\_key) | Public key |
+
+![purple-divider](https://user-images.githubusercontent.com/7065401/52071927-c1cd7100-2562-11e9-908a-dde91ba14e59.png)
+
+## Module: volumes
+
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | ~> 1.47 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | ~> 1.47 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [hcloud_volume.vol](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/volume) | resource |
+| [hcloud_volume_attachment.vol_attachment](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/volume_attachment) | resource |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_volume_config"></a> [volume\_config](#input\_volume\_config) | Volume configuration | <pre>map(object({<br/>    size = number<br/>    location = string<br/>    server_id = string<br/>  }))</pre> | n/a | yes |
+| <a name="input_volume_format"></a> [volume\_format](#input\_volume\_format) | Format volume after creation (xfs or ext4) | `string` | `"xfs"` | no |
+
+## Outputs
+
+No outputs.
 
 ![purple-divider](https://user-images.githubusercontent.com/7065401/52071927-c1cd7100-2562-11e9-908a-dde91ba14e59.png)
 

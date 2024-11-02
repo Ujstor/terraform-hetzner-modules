@@ -4,6 +4,8 @@ output "server_info" {
     key => {
       ip     = hcloud_server.server[key].ipv4_address
       status = hcloud_server.server[key].status
+      id     = hcloud_server.server[key].id
+      location = hcloud_server.server[key].location
     }
   }
 }

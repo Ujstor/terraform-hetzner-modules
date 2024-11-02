@@ -64,6 +64,46 @@ module "cluster" {
 
 }
 
+module "volumes" {
+  source = "../../modules/volumes/"
+
+  volume_config = {
+    volume-1 = {
+      size     = 100
+      location = module.cluster.server_status.server-1.location
+      server_id = module.cluster.server_status.server-1.id
+    }
+    volume-2 = {
+      size     = 100
+      location = module.cluster.server_status.server-2.location
+      server_id = module.cluster.server_status.server-2.id
+    }
+    volume-3 = {
+      size     = 100
+      location = module.cluster.server_status.server-3.location
+      server_id = module.cluster.server_status.server-3.id
+    }
+    volume-4 = {
+      size     = 100
+      location = module.cluster.server_status.server-4.location
+      server_id = module.cluster.server_status.server-4.id
+    }
+    volume-5 = {
+      size     = 100
+      location = module.cluster.server_status.server-5.location
+      server_id = module.cluster.server_status.server-4.id
+    }
+    volume-6 = {
+      size     = 100
+      location = module.cluster.server_status.server-6.location
+      server_id = module.cluster.server_status.server-6.id
+    }
+  }
+
+  depends_on = [module.cluster]
+}
+
+
 module "cloudflare_record" {
   source = "../../modules/network/cloudflare_record/"
 

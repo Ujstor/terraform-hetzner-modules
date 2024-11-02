@@ -10,13 +10,15 @@ import (
 
 const (
 	server_plan          = "Plan: 3 to add, 0 to change, 0 to destroy."
+	firewall_plan        = "Plan: 4 to add, 0 to change, 0 to destroy."
 	servers_network_plan = "Plan: 22 to add, 0 to change, 0 to destroy."
-	cluster_plan         = "Plan: 23 to add, 0 to change, 0 to destroy."
-)
+	servers_volumes_plan = "Plan: 11 to add, 0 to change, 0 to destroy."
+	cluster_plan         = "Plan: 35 to add, 0 to change, 0 to destroy."
 
-var (
 	server_path          = "../examples/server/"
+	firewall_path        = "../examples/firewall/"
 	servers_network_path = "../examples/servers_network/"
+	servers_volumes_path = "../examples/servers_volumes/"
 	cluster_path         = "../examples/cluster/"
 )
 
@@ -64,12 +66,20 @@ func runTerraformPlanHCTest(t *testing.T, exampleDir string, expectedPlan string
 	assert.Contains(t, planResult, expectedPlan)
 }
 
+func TestTfPlanFirewall(t *testing.T) {
+	runTerraformPlanHTest(t, firewall_path, firewall_plan)
+}
+
 func TestTfPlanServer(t *testing.T) {
 	runTerraformPlanHTest(t, server_path, server_plan)
 }
 
 func TestTfPlanServerNetwork(t *testing.T) {
 	runTerraformPlanHCTest(t, servers_network_path, servers_network_plan)
+}
+
+func TestTfPlanServerVolumes(t *testing.T) {
+	runTerraformPlanHTest(t, servers_volumes_path, servers_volumes_plan)
 }
 
 func TestTfPlanCluster(t *testing.T) {

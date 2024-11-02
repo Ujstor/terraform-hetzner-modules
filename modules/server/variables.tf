@@ -4,8 +4,8 @@ variable "server_config" {
     location     = string
     server_type  = string
     labels       = optional(string)
-    ipv4_enabled = bool
-    ipv6_enabled = bool
+    ipv4_enabled = optional(bool)
+    ipv6_enabled = optional(bool)
     subnet_id    = optional(string)
     subnet_ip    = optional(string)
     firewall_ids = optional(list(string))

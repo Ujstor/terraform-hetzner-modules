@@ -25,13 +25,14 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_network_type"></a> [network\_type](#input\_network\_type) | Network Type | `string` | n/a | yes |
-| <a name="input_network_zone"></a> [network\_zone](#input\_network\_zone) | Network Zone | `string` | n/a | yes |
-| <a name="input_subnet_config"></a> [subnet\_config](#input\_subnet\_config) | Subnet Configuration | <pre>map(object({<br/>    subnet_ip_range = string<br/>  }))</pre> | n/a | yes |
-| <a name="input_vpc_config"></a> [vpc\_config](#input\_vpc\_config) | VPC Configuration | <pre>object({<br/>    vpc_name     = string<br/>    vpc_ip_range = string<br/>  })</pre> | n/a | yes |
+| <a name="input_network_type"></a> [network\_type](#input\_network\_type) | Network Type | `string` | `"cloud"` | no |
+| <a name="input_network_zone"></a> [network\_zone](#input\_network\_zone) | Network Zone | `string` | `"eu-central"` | no |
+| <a name="input_subnet_config"></a> [subnet\_config](#input\_subnet\_config) | Subnet Configuration | <pre>map(object({<br>    subnet_ip_range = string<br>  }))</pre> | n/a | yes |
+| <a name="input_vpc_config"></a> [vpc\_config](#input\_vpc\_config) | VPC Configuration | <pre>object({<br>    vpc_name     = string<br>    vpc_ip_range = string<br>  })</pre> | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_subnet_id"></a> [subnet\_id](#output\_subnet\_id) | n/a |
+| <a name="output_network_id"></a> [network\_id](#output\_network\_id) | The ID of the VPC network. |
+| <a name="output_subnet_id"></a> [subnet\_id](#output\_subnet\_id) | The ID of the subnet. |

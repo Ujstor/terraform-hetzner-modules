@@ -35,3 +35,4 @@ terraform.rc
 .terraform*
 
 .env
+.ssh

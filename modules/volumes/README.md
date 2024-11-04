@@ -25,7 +25,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_volume_config"></a> [volume\_config](#input\_volume\_config) | Volume configuration | <pre>map(object({<br/>    size = number<br/>    location = string<br/>    server_id = string<br/>  }))</pre> | n/a | yes |
+| <a name="input_volume_config"></a> [volume\_config](#input\_volume\_config) | Volume configuration | <pre>map(object({<br>    size = number<br>    location = string<br>    server_id = string<br>  }))</pre> | n/a | yes |
 | <a name="input_volume_format"></a> [volume\_format](#input\_volume\_format) | Format volume after creation (xfs or ext4) | `string` | `"xfs"` | no |
 
 ## Outputs

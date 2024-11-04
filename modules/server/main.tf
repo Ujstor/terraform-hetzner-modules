@@ -8,9 +8,7 @@ resource "hcloud_server" "server" {
   ssh_keys     = var.hcloud_ssh_key_id
   firewall_ids = var.firewall_ids
 
-  labels = {
-    type = each.value.labels
-  }
+  labels = each.value.labels
 
   public_net {
     ipv4_enabled = each.value.ipv4_enabled

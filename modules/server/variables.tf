@@ -3,7 +3,7 @@ variable "server_config" {
   type = map(object({
     location     = string
     server_type  = string
-    labels       = optional(string)
+    labels       = optional(map(string))
     ipv4_enabled = optional(bool)
     ipv6_enabled = optional(bool)
     subnet_id    = optional(string)

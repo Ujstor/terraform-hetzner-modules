@@ -9,17 +9,19 @@ import (
 )
 
 const (
-	server_plan          = "Plan: 3 to add, 0 to change, 0 to destroy."
-	firewall_plan        = "Plan: 4 to add, 0 to change, 0 to destroy."
-	servers_network_plan = "Plan: 22 to add, 0 to change, 0 to destroy."
-	servers_volumes_plan = "Plan: 11 to add, 0 to change, 0 to destroy."
-	cluster_plan         = "Plan: 37 to add, 0 to change, 0 to destroy."
+	server_plan                  = "Plan: 3 to add, 0 to change, 0 to destroy."
+	firewall_plan                = "Plan: 4 to add, 0 to change, 0 to destroy."
+	servers_network_plan         = "Plan: 22 to add, 0 to change, 0 to destroy."
+	servers_volumes_plan         = "Plan: 11 to add, 0 to change, 0 to destroy."
+	cluster_plan                 = "Plan: 37 to add, 0 to change, 0 to destroy."
+	loadbalacer_k8s_cluster_plan = "Plan: 20 to add, 0 to change, 0 to destroy."
 
-	server_path          = "../examples/server/"
-	firewall_path        = "../examples/firewall/"
-	servers_network_path = "../examples/servers_network/"
-	servers_volumes_path = "../examples/servers_volumes/"
-	cluster_path         = "../examples/cluster/"
+	server_path                  = "../examples/server/"
+	firewall_path                = "../examples/firewall/"
+	servers_network_path         = "../examples/servers_network/"
+	servers_volumes_path         = "../examples/servers_volumes/"
+	cluster_path                 = "../examples/cluster/"
+	loadbalacer_k8s_cluster_path = "../examples/loadbalancer_k8s_cluster/"
 )
 
 // Hetzner
@@ -84,4 +86,8 @@ func TestTfPlanServerVolumes(t *testing.T) {
 
 func TestTfPlanCluster(t *testing.T) {
 	runTerraformPlanHCTest(t, cluster_path, cluster_plan)
+}
+
+func TestTfPlanLbK8s(t *testing.T) {
+	runTerraformPlanHCTest(t, loadbalacer_k8s_cluster_path, loadbalacer_k8s_cluster_plan)
 }

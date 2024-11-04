@@ -12,7 +12,10 @@ module "servers" {
     server-1 = {
       location     = "fsn1"
       server_type  = "cx22"
-      labels       = "servers-1"
+      labels       = {
+        group = "servers-1"
+        type  = "contrller"
+      }
       ipv4_enabled = true
       ipv6_enabled = false
       subnet_id    = module.vpc_subnets.subnet_id.subnet-1.subnet_id
@@ -22,7 +25,10 @@ module "servers" {
     server-2 = {
       location     = "hel1"
       server_type  = "cx22"
-      labels       = "servers-1"
+      labels       = {
+        group = "servers-1"
+        type  = "contrller"
+      }
       ipv4_enabled = true
       ipv6_enabled = false
       subnet_id    = module.vpc_subnets.subnet_id.subnet-1.subnet_id
@@ -32,7 +38,10 @@ module "servers" {
     server-3 = {
       location     = "fsn1"
       server_type  = "cx22"
-      labels       = "servers-2"
+      labels       = {
+        group = "servers-2"
+        type  = "worker"
+      }
       ipv4_enabled = true
       ipv6_enabled = false
       subnet_id    = module.vpc_subnets.subnet_id.subnet-2.subnet_id
@@ -42,7 +51,10 @@ module "servers" {
     server-4 = {
       location     = "hel1"
       server_type  = "cx22"
-      labels       = "servers-2"
+      labels       = {
+        group = "servers-2"
+        type  = "worker"
+      }
       ipv4_enabled = true
       ipv6_enabled = false
       subnet_id    = module.vpc_subnets.subnet_id.subnet-2.subnet_id
@@ -53,7 +65,10 @@ module "servers" {
     server-5 = {
       location     = "fsn1"
       server_type  = "cx22"
-      labels       = "servers-3"
+      labels       = {
+        group = "servers-3"
+        type  = "worker"
+      }
       ipv4_enabled = true
       ipv6_enabled = false
       subnet_id    = module.vpc_subnets.subnet_id.subnet-3.subnet_id
@@ -63,7 +78,10 @@ module "servers" {
     server-6 = {
       location     = "nbg1"
       server_type  = "cx22"
-      labels       = "servers-3"
+      labels       = {
+        group = "servers-3"
+        type  = "worker"
+      }
       ipv4_enabled = true
       ipv6_enabled = false
       subnet_id    = module.vpc_subnets.subnet_id.subnet-3.subnet_id

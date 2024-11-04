@@ -16,9 +16,11 @@ variable "subnet_config" {
 variable "network_type" {
   description = "Network Type"
   type        = string
+  default     = "cloud"
 }
 
 variable "network_zone" {
   description = "Network Zone"
   type        = string
+  default     = "eu-central"
 }

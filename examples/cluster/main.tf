@@ -6,61 +6,74 @@ module "cluster" {
   source = "../../modules/cluster/"
 
   server_config = {
-    server-1 = {
-      location     = "fsn1"
-      server_type  = "cx22"
-      labels       = "servers-1"
-      ipv4_enabled = true
-      ipv6_enabled = false
-      subnet_id    = module.network_config.subnet_id.subnet-1.subnet_id
-      subnet_ip    = "10.0.1.1"
+      server-1 = {
+        location     = "fsn1"
+        server_type  = "cx22"
+        labels = {
+          group = "servers-1"
+        }
+        ipv4_enabled = true
+        ipv6_enabled = false
+        subnet_id    = module.network_config.subnet_id.subnet-1.subnet_id
+        subnet_ip    = "10.0.1.1"
+      }
+      server-2 = {
+        location     = "nbg1"
+        server_type  = "cx22"
+        labels = {
+          group = "servers-1"
+        }
+        ipv4_enabled = true
+        ipv6_enabled = false
+        subnet_id    = module.network_config.subnet_id.subnet-1.subnet_id
+        subnet_ip    = "10.0.1.2"
+      }
+      server-3 = {
+        location     = "hel1"
+        server_type  = "cx22"
+        labels = {
+
+          group = "servers-2"
+        }
+        ipv4_enabled = true
+        ipv6_enabled = false
+        subnet_id    = module.network_config.subnet_id.subnet-2.subnet_id
+        subnet_ip    = "10.0.2.1"
+      }
+      server-4 = {
+        location     = "hel1"
+        server_type  = "cx22"
+        labels = {
+          group = "servers-2"
+        }
+        ipv4_enabled = true
+        ipv6_enabled = false
+        subnet_id    = module.network_config.subnet_id.subnet-2.subnet_id
+        subnet_ip    = "10.0.2.2"
+      }
+      server-5 = {
+        location     = "fsn1"
+        server_type  = "cx22"
+        labels = {
+          group = "servers-3"
+        }
+        ipv4_enabled = true
+        ipv6_enabled = false
+        subnet_id    = module.network_config.subnet_id.subnet-3.subnet_id
+        subnet_ip    = "10.0.3.1"
+      }
+      server-6 = {
+        location     = "nbg1"
+        server_type  = "cx22"
+        labels = {
+          group = "servers-3"
+        }
+        ipv4_enabled = true
+        ipv6_enabled = false
+        subnet_id    = module.network_config.subnet_id.subnet-3.subnet_id
+        subnet_ip    = "10.0.3.2"
+      }
     }
-    server-2 = {
-      location     = "nbg1"
-      server_type  = "cx22"
-      labels       = "servers-1"
-      ipv4_enabled = true
-      ipv6_enabled = false
-      subnet_id    = module.network_config.subnet_id.subnet-1.subnet_id
-      subnet_ip    = "10.0.1.2"
-    }
-    server-3 = {
-      location     = "hel1"
-      server_type  = "cx22"
-      labels       = "servers-2"
-      ipv4_enabled = true
-      ipv6_enabled = false
-      subnet_id    = module.network_config.subnet_id.subnet-2.subnet_id
-      subnet_ip    = "10.0.2.1"
-    }
-    server-4 = {
-      location     = "hel1"
-      server_type  = "cx22"
-      labels       = "servers-2"
-      ipv4_enabled = true
-      ipv6_enabled = false
-      subnet_id    = module.network_config.subnet_id.subnet-2.subnet_id
-      subnet_ip    = "10.0.2.2"
-    }
-    server-5 = {
-      location     = "fsn1"
-      server_type  = "cx22"
-      labels       = "servers-3"
-      ipv4_enabled = true
-      ipv6_enabled = false
-      subnet_id    = module.network_config.subnet_id.subnet-3.subnet_id
-      subnet_ip    = "10.0.3.1"
-    }
-    server-6 = {
-      location     = "nbg1"
-      server_type  = "cx22"
-      labels       = "servers-3"
-      ipv4_enabled = true
-      ipv6_enabled = false
-      subnet_id    = module.network_config.subnet_id.subnet-3.subnet_id
-      subnet_ip    = "10.0.3.2"
-    }
-  }
     # Aditional firewall rules except the default ones (22, 80, 443)
     firewall_config = {
     ui = {

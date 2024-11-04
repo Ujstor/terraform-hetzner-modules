@@ -32,7 +32,7 @@ func runTerraformPlanHTest(t *testing.T, exampleDir string, expectedPlan string)
 
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: moduleDir,
-		// VarFiles:     []string{filepath.Join(moduleDir, ".auto.tfvars")},
+		VarFiles:     []string{filepath.Join(moduleDir, ".auto.tfvars")},
 		Vars: map[string]interface{}{
 			"hcloud_token": os.Getenv("HCLOUD_TOKEN"),
 		},
@@ -53,7 +53,7 @@ func runTerraformPlanHCTest(t *testing.T, exampleDir string, expectedPlan string
 
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: moduleDir,
-		// VarFiles:     []string{filepath.Join(moduleDir, ".auto.tfvars")},
+		VarFiles:     []string{filepath.Join(moduleDir, ".auto.tfvars")},
 		Vars: map[string]interface{}{
 			"hcloud_token":         os.Getenv("HCLOUD_TOKEN"),
 			"cloudflare_api_token": os.Getenv("CLOUDFLARE_API_TOKEN"),

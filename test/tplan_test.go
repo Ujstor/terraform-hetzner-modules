@@ -14,7 +14,7 @@ const (
 	servers_network_plan         = "Plan: 22 to add, 0 to change, 0 to destroy."
 	servers_volumes_plan         = "Plan: 11 to add, 0 to change, 0 to destroy."
 	cluster_plan                 = "Plan: 37 to add, 0 to change, 0 to destroy."
-	loadbalacer_k8s_cluster_plan = "Plan: "
+	loadbalacer_k8s_cluster_plan = "Plan: 20 to add, 0 to change, 0 to destroy."
 
 	server_path                  = "../examples/server/"
 	firewall_path                = "../examples/firewall/"
@@ -34,7 +34,7 @@ func runTerraformPlanHTest(t *testing.T, exampleDir string, expectedPlan string)
 
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: moduleDir,
-		VarFiles:     []string{filepath.Join(moduleDir, ".auto.tfvars")},
+		// VarFiles:     []string{filepath.Join(moduleDir, ".auto.tfvars")},
 		Vars: map[string]interface{}{
 			"hcloud_token": os.Getenv("HCLOUD_TOKEN"),
 		},
@@ -55,7 +55,7 @@ func runTerraformPlanHCTest(t *testing.T, exampleDir string, expectedPlan string
 
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: moduleDir,
-		VarFiles:     []string{filepath.Join(moduleDir, ".auto.tfvars")},
+		// VarFiles:     []string{filepath.Join(moduleDir, ".auto.tfvars")},
 		Vars: map[string]interface{}{
 			"hcloud_token":         os.Getenv("HCLOUD_TOKEN"),
 			"cloudflare_api_token": os.Getenv("CLOUDFLARE_API_TOKEN"),

@@ -94,7 +94,7 @@ module "cloudflare_record" {
     kube_api= {
       zone_id = var.cloudflare_zone_id
       name    = "api.k8s"
-      content   = module.servers.server_info.server-1.ip
+      content = module.load_balancer.lb_status.k8s-api.lb_ip
       type    = "A"
       ttl     = 3600
       proxied = false
@@ -124,21 +124,20 @@ module "vpc_subnets" {
   network_zone = "eu-central"
 }
 
-module "loadbalancer" {
+module "load_balancer" {
   source = "../../modules/network/loadbalancer"
   lb_config = {
     k8s-api = {
       name               = "k8s-api-lb"
       load_balancer_type = "lb11"
-      location          = "fsn1"
       network_zone      = module.vpc_subnets.subnet_id.subnet-1.network_zone
       load_balancer_network = [
         {
-          network_id = module.vpc_subnets.network_id
+          # network_id = module.vpc_subnets.network_id
           subnet_id  = module.vpc_subnets.subnet_id.subnet-1.subnet_id
         }
       ]
     }
   }
-  depends_on = [module.vpc_subnets]
+  depends_on = [module.vpc_subnets, module.servers]
 }

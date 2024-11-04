@@ -12,7 +12,10 @@ module "servers" {
     server-1 = {
       location     = "fsn1"
       server_type  = "cx22"
-      labels       = "k8s-cluster"
+      labels       = { 
+        type: "k8s-cluster"
+        control_plane: "true"
+      }
       ipv4_enabled = true
       ipv6_enabled = false
       subnet_id    = module.vpc_subnets.subnet_id.subnet-1.subnet_id
@@ -21,7 +24,10 @@ module "servers" {
     server-2 = {
       location     = "hel1"
       server_type  = "cx22"
-      labels       = "k8s-cluster"
+      labels       = { 
+        control_plane: "true"
+        type: "k8s-cluster"
+      }
       ipv4_enabled = true
       ipv6_enabled = false
       subnet_id    = module.vpc_subnets.subnet_id.subnet-1.subnet_id
@@ -30,39 +36,47 @@ module "servers" {
     server-3 = {
       location     = "fsn1"
       server_type  = "cx22"
-      labels       = "k8s-cluster"
+      labels       = { 
+        control_plane: "true"
+        type: "k8s-cluster"
+      }
+      ipv4_enabled = true
+      ipv6_enabled = false
+      subnet_id    = module.vpc_subnets.subnet_id.subnet-1.subnet_id
+      subnet_ip    = "10.0.1.3"
+    }
+    server-4 = {
+      location     = "hel1"
+      server_type  = "cx22"
+      labels       = { 
+        type: "k8s-cluster"
+      }
       ipv4_enabled = true
       ipv6_enabled = false
       subnet_id    = module.vpc_subnets.subnet_id.subnet-2.subnet_id
       subnet_ip    = "10.0.2.1"
     }
-    server-4 = {
-      location     = "hel1"
-      server_type  = "cx22"
-      labels       = "k8s-cluster"
-      ipv4_enabled = true
-      ipv6_enabled = false
-      subnet_id    = module.vpc_subnets.subnet_id.subnet-2.subnet_id
-      subnet_id    = module.vpc_subnets.subnet_id.subnet-2.subnet_id
-      subnet_ip    = "10.0.3.2"
-    }
     server-5 = {
       location     = "fsn1"
       server_type  = "cx22"
-      labels       = "k8s-cluster"
+      labels       = { 
+        type: "k8s-cluster"
+      }
       ipv4_enabled = true
       ipv6_enabled = false
-      subnet_id    = module.vpc_subnets.subnet_id.subnet-3.subnet_id
-      subnet_ip    = "10.0.3.1"
+      subnet_id    = module.vpc_subnets.subnet_id.subnet-2.subnet_id
+      subnet_ip    = "10.0.2.2"
     }
     server-6 = {
       location     = "nbg1"
       server_type  = "cx22"
-      labels       = "k8s-cluster"
+      labels       = { 
+        type: "k8s-cluster"
+      }
       ipv4_enabled = true
       ipv6_enabled = false
-      subnet_id    = module.vpc_subnets.subnet_id.subnet-3.subnet_id
-      subnet_ip    = "10.0.3.2"
+      subnet_id    = module.vpc_subnets.subnet_id.subnet-2.subnet_id
+      subnet_ip    = "10.0.2.3"
     }
   }
 
@@ -104,11 +118,27 @@ module "vpc_subnets" {
     subnet-2 = {
       subnet_ip_range = "10.0.2.0/24"
     }
-    subnet-3 = {
-      subnet_ip_range = "10.0.3.0/24"
-    }
   }
 
   network_type = "cloud"
   network_zone = "eu-central"
+}
+
+module "loadbalancer" {
+  source = "../../modules/network/loadbalancer"
+  lb_config = {
+    k8s-api = {
+      name               = "k8s-api-lb"
+      load_balancer_type = "lb11"
+      location          = "fsn1"
+      network_zone      = module.vpc_subnets.subnet_id.subnet-1.network_zone
+      load_balancer_network = [
+        {
+          network_id = module.vpc_subnets.network_id
+          subnet_id  = module.vpc_subnets.subnet_id.subnet-1.subnet_id
+        }
+      ]
+    }
+  }
+  depends_on = [module.vpc_subnets]
 }

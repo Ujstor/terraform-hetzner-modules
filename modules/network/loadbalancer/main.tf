@@ -5,7 +5,7 @@ resource "hcloud_load_balancer" "lb" {
   load_balancer_type = each.value.load_balancer_type
   network_zone       = each.value.network_zone
   location           = each.value.location
-  algorithm          = each.value.algorithm
+  # algorithm          = each.value.algorithm
   labels             = each.value.labels
 }
 
@@ -26,5 +26,4 @@ resource "hcloud_load_balancer_network" "serve_network" {
   load_balancer_id = hcloud_load_balancer.lb[each.key].id
   network_id       = each.value.network_id
   ip               = each.value.ip
-  depends_on       = var.depended_on_lb_serve_network
 }

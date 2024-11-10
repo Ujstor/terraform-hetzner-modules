@@ -17,16 +17,17 @@ resource "hcloud_load_balancer" "lb" {
 
 # Load balancer targets
 resource "hcloud_load_balancer_target" "load_balancer_target" {
-  for_each = merge([
-    for lb_key, lb in var.lb_config : {
-      for idx, target in coalesce(lb.load_balancer_targets, []) : 
-      "${lb_key}-${idx}" => {
-        lb_key = lb_key
-        target = target
-      }
-    }
-  ]...)
-
+  for_each = {
+    for idx, item in flatten([
+      for lb_key, lb in var.lb_config : lb.load_balancer_targets != null ? [
+        {
+          key    = lb_key
+          target = lb.load_balancer_targets
+          lb_key = lb_key
+        }
+      ] : []
+    ]) : idx => item
+  }
   type             = each.value.target.type
   load_balancer_id = hcloud_load_balancer.lb[each.value.lb_key].id
   server_id        = each.value.target.server_id
@@ -37,15 +38,17 @@ resource "hcloud_load_balancer_target" "load_balancer_target" {
 
 # Load balancer network
 resource "hcloud_load_balancer_network" "serve_network" {
-  for_each = merge([
-    for lb_key, lb in var.lb_config : {
-      for idx, network in coalesce(lb.load_balancer_network, []) :
-      "${lb_key}-${idx}" => {
-        lb_key = lb_key
-        network = network
-      }
-    }
-  ]...)
+  for_each = {
+    for idx, item in flatten([
+      for lb_key, lb in var.lb_config : lb.load_balancer_network != null ? [
+        {
+          key     = lb_key
+          network = lb.load_balancer_network
+          lb_key  = lb_key
+        }
+      ] : []
+    ]) : idx => item
+  }
 
   load_balancer_id = hcloud_load_balancer.lb[each.value.lb_key].id
   network_id       = each.value.network.network_id

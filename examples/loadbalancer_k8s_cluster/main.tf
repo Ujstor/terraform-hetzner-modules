@@ -10,11 +10,11 @@ module "servers" {
 
   server_config = {
     server-1 = {
-      location     = "fsn1"
-      server_type  = "cx22"
-      labels       = { 
-        type: "k8s-cluster"
-        control_plane: "true"
+      location    = "fsn1"
+      server_type = "cx22"
+      labels = {
+        type : "k8s-cluster"
+        control_plane : "true"
       }
       ipv4_enabled = true
       ipv6_enabled = false
@@ -22,11 +22,11 @@ module "servers" {
       subnet_ip    = "10.0.1.1"
     }
     server-2 = {
-      location     = "hel1"
-      server_type  = "cx22"
-      labels       = { 
-        control_plane: "true"
-        type: "k8s-cluster"
+      location    = "hel1"
+      server_type = "cx22"
+      labels = {
+        control_plane : "true"
+        type : "k8s-cluster"
       }
       ipv4_enabled = true
       ipv6_enabled = false
@@ -34,11 +34,11 @@ module "servers" {
       subnet_ip    = "10.0.1.2"
     }
     server-3 = {
-      location     = "fsn1"
-      server_type  = "cx22"
-      labels       = { 
-        control_plane: "true"
-        type: "k8s-cluster"
+      location    = "fsn1"
+      server_type = "cx22"
+      labels = {
+        control_plane : "true"
+        type : "k8s-cluster"
       }
       ipv4_enabled = true
       ipv6_enabled = false
@@ -46,10 +46,10 @@ module "servers" {
       subnet_ip    = "10.0.1.3"
     }
     server-4 = {
-      location     = "hel1"
-      server_type  = "cx22"
-      labels       = { 
-        type: "k8s-cluster"
+      location    = "hel1"
+      server_type = "cx22"
+      labels = {
+        type : "k8s-cluster"
       }
       ipv4_enabled = true
       ipv6_enabled = false
@@ -57,10 +57,10 @@ module "servers" {
       subnet_ip    = "10.0.2.1"
     }
     server-5 = {
-      location     = "fsn1"
-      server_type  = "cx22"
-      labels       = { 
-        type: "k8s-cluster"
+      location    = "fsn1"
+      server_type = "cx22"
+      labels = {
+        type : "k8s-cluster"
       }
       ipv4_enabled = true
       ipv6_enabled = false
@@ -68,10 +68,10 @@ module "servers" {
       subnet_ip    = "10.0.2.2"
     }
     server-6 = {
-      location     = "nbg1"
-      server_type  = "cx22"
-      labels       = { 
-        type: "k8s-cluster"
+      location    = "nbg1"
+      server_type = "cx22"
+      labels = {
+        type : "k8s-cluster"
       }
       ipv4_enabled = true
       ipv6_enabled = false
@@ -91,7 +91,7 @@ module "cloudflare_record" {
   source = "../../modules/network/cloudflare_record/"
 
   cloudflare_record = {
-    kube_api= {
+    kube_api = {
       zone_id = var.cloudflare_zone_id
       name    = "api.k8s"
       content = module.load_balancer.lb_status.k8s-api.lb_ip
@@ -100,7 +100,7 @@ module "cloudflare_record" {
       proxied = false
     }
   }
-    depends_on = [module.servers]
+  depends_on = [module.servers]
 }
 
 module "vpc_subnets" {
@@ -130,13 +130,10 @@ module "load_balancer" {
     k8s-api = {
       name               = "k8s-api-lb"
       load_balancer_type = "lb11"
-      network_zone      = module.vpc_subnets.subnet_id.subnet-1.network_zone
-      load_balancer_network = [
-        {
-          # network_id = module.vpc_subnets.network_id
-          subnet_id  = module.vpc_subnets.subnet_id.subnet-1.subnet_id
-        }
-      ]
+      network_zone       = module.vpc_subnets.subnet_id.subnet-1.network_zone
+      load_balancer_network = {
+        subnet_id = module.vpc_subnets.subnet_id.subnet-1.subnet_id
+      }
     }
   }
   depends_on = [module.vpc_subnets, module.servers]

@@ -33,8 +33,8 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_firewall_config"></a> [firewall\_config](#input\_firewall\_config) | A map of firewalls to create | <pre>map(object({<br>    name   = string<br>    labels = optional(map(string), {})<br>    rules = list(object({<br>      direction       = string<br>      protocol       = string<br>      port          = string<br>      source_ips     = optional(list(string))<br>      destination_ips = optional(list(string))<br>      description    = optional(string)<br>    }))<br>  }))</pre> | `{}` | no |
-| <a name="input_server_config"></a> [server\_config](#input\_server\_config) | Configuration for servers | <pre>map(object({<br>    location     = string<br>    server_type  = string<br>    labels       = optional(map(string))<br>    ipv4_enabled = optional(bool)<br>    ipv6_enabled = optional(bool)<br>    subnet_id    = string<br>    subnet_ip    = string<br>    firewall_ids = optional(list(string))<br>  }))</pre> | n/a | yes |
+| <a name="input_firewall_config"></a> [firewall\_config](#input\_firewall\_config) | A map of firewalls to create | <pre>map(object({<br/>    name   = string<br/>    labels = optional(map(string), {})<br/>    rules = list(object({<br/>      direction       = string<br/>      protocol       = string<br/>      port          = string<br/>      source_ips     = optional(list(string))<br/>      destination_ips = optional(list(string))<br/>      description    = optional(string)<br/>    }))<br/>  }))</pre> | `{}` | no |
+| <a name="input_server_config"></a> [server\_config](#input\_server\_config) | Configuration for servers | <pre>map(object({<br/>    location     = string<br/>    server_type  = string<br/>    labels       = optional(map(string))<br/>    ipv4_enabled = optional(bool)<br/>    ipv6_enabled = optional(bool)<br/>    subnet_id    = string<br/>    subnet_ip    = string<br/>    firewall_ids = optional(list(string))<br/>  }))</pre> | n/a | yes |
 | <a name="input_ssh_key_name"></a> [ssh\_key\_name](#input\_ssh\_key\_name) | Name of the SSH key | `string` | `"cluster_hetzner_key"` | no |
 | <a name="input_ssh_key_path"></a> [ssh\_key\_path](#input\_ssh\_key\_path) | Path to the SSH key | `string` | `"~/.ssh"` | no |
 | <a name="input_use_network"></a> [use\_network](#input\_use\_network) | Flag to use network | `bool` | `true` | no |
@@ -75,7 +75,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cloudflare_record"></a> [cloudflare\_record](#input\_cloudflare\_record) | Cloudflare record configuration | <pre>map(object({<br>    zone_id = string<br>    name    = string<br>    content = string<br>    type    = string<br>    ttl     = number<br>    proxied = bool<br>  }))</pre> | n/a | yes |
+| <a name="input_cloudflare_record"></a> [cloudflare\_record](#input\_cloudflare\_record) | Cloudflare record configuration | <pre>map(object({<br/>    zone_id = string<br/>    name    = string<br/>    content = string<br/>    type    = string<br/>    ttl     = number<br/>    proxied = bool<br/>  }))</pre> | n/a | yes |
 
 ## Outputs
 
@@ -111,7 +111,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_firewalls"></a> [firewalls](#input\_firewalls) | A map of firewalls to create | <pre>map(object({<br>    name   = string<br>    labels = optional(map(string), {})<br>    rules = list(object({<br>      direction       = string<br>      protocol       = string<br>      port          = string<br>      source_ips     = optional(list(string))<br>      destination_ips = optional(list(string))<br>      description    = optional(string)<br>    }))<br>  }))</pre> | n/a | yes |
+| <a name="input_firewalls"></a> [firewalls](#input\_firewalls) | A map of firewalls to create | <pre>map(object({<br/>    name   = string<br/>    labels = optional(map(string), {})<br/>    rules = list(object({<br/>      direction       = string<br/>      protocol       = string<br/>      port          = string<br/>      source_ips     = optional(list(string))<br/>      destination_ips = optional(list(string))<br/>      description    = optional(string)<br/>    }))<br/>  }))</pre> | n/a | yes |
 
 ## Outputs
 
@@ -152,7 +152,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_lb_config"></a> [lb\_config](#input\_lb\_config) | Load balancer configuration. | <pre>map(object({<br>    name               = string<br>    load_balancer_type = string<br>    network_zone       = optional(string)<br>    location           = optional(string) #Require when no network_zone is set<br>    algorithm          = optional(object({ type = string }))<br>    labels             = optional(map(string))<br>    load_balancer_targets = optional(list(object({<br>      type           = string           #server, label_selector, ip<br>      server_id      = optional(string) #if type server<br>      label_selector = optional(string)<br>      ip             = optional(string) #if type ip<br>      use_private_ip = optional(bool)   #if type server or label_selector<br>    })))<br>    load_balancer_network = optional(list(object({<br>      #Use depends_on to make sure the network is created before the load balancer<br>      network_id = optional(string) #or network id or subnet id<br>      subnet_id  = optional(string)<br>      ip         = optional(string) #subnet ip<br>    })))<br>  }))</pre> | n/a | yes |
+| <a name="input_lb_config"></a> [lb\_config](#input\_lb\_config) | Load balancer configuration. | <pre>map(object({<br/>    name               = string<br/>    load_balancer_type = string<br/>    network_zone       = optional(string)<br/>    location           = optional(string) #Require when no network_zone is set<br/>    algorithm          = optional(object({ type = string }))<br/>    labels             = optional(map(string))<br/>    load_balancer_targets = optional(object({<br/>      type           = string           #server, label_selector, ip<br/>      server_id      = optional(string) #if type server<br/>      label_selector = optional(string)<br/>      ip             = optional(string) #if type ip<br/>      use_private_ip = optional(bool)   #if type server or label_selector<br/>    }))<br/>    load_balancer_network = optional(object({<br/>      #Use depends_on to make sure the network is created before the load balancer<br/>      network_id = optional(string) #or network id or subnet id<br/>      subnet_id  = optional(string)<br/>      ip         = optional(string) #subnet ip<br/>    }))<br/>  }))</pre> | n/a | yes |
 
 ## Outputs
 
@@ -193,8 +193,8 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_network_type"></a> [network\_type](#input\_network\_type) | Network Type | `string` | `"cloud"` | no |
 | <a name="input_network_zone"></a> [network\_zone](#input\_network\_zone) | Network Zone | `string` | `"eu-central"` | no |
-| <a name="input_subnet_config"></a> [subnet\_config](#input\_subnet\_config) | Subnet Configuration | <pre>map(object({<br>    subnet_ip_range = string<br>  }))</pre> | n/a | yes |
-| <a name="input_vpc_config"></a> [vpc\_config](#input\_vpc\_config) | VPC Configuration | <pre>object({<br>    vpc_name     = string<br>    vpc_ip_range = string<br>  })</pre> | n/a | yes |
+| <a name="input_subnet_config"></a> [subnet\_config](#input\_subnet\_config) | Subnet Configuration | <pre>map(object({<br/>    subnet_ip_range = string<br/>  }))</pre> | n/a | yes |
+| <a name="input_vpc_config"></a> [vpc\_config](#input\_vpc\_config) | VPC Configuration | <pre>object({<br/>    vpc_name     = string<br/>    vpc_ip_range = string<br/>  })</pre> | n/a | yes |
 
 ## Outputs
 
@@ -237,7 +237,7 @@ No modules.
 | <a name="input_firewall_ids"></a> [firewall\_ids](#input\_firewall\_ids) | Firewall IDs to pass to the server | `list(string)` | `null` | no |
 | <a name="input_hcloud_ssh_key_id"></a> [hcloud\_ssh\_key\_id](#input\_hcloud\_ssh\_key\_id) | ID of the SSH key created and used for Hetzner cloud and serves | `list(string)` | n/a | yes |
 | <a name="input_os_type"></a> [os\_type](#input\_os\_type) | OS image to use for the server | `string` | `"debian-12"` | no |
-| <a name="input_server_config"></a> [server\_config](#input\_server\_config) | Config for each created server | <pre>map(object({<br>    location     = string<br>    server_type  = string<br>    labels       = optional(map(string))<br>    ipv4_enabled = optional(bool)<br>    ipv6_enabled = optional(bool)<br>    subnet_id    = optional(string)<br>    subnet_ip    = optional(string)<br>    firewall_ids = optional(list(string))<br>  }))</pre> | n/a | yes |
+| <a name="input_server_config"></a> [server\_config](#input\_server\_config) | Config for each created server | <pre>map(object({<br/>    location     = string<br/>    server_type  = string<br/>    labels       = optional(map(string))<br/>    ipv4_enabled = optional(bool)<br/>    ipv6_enabled = optional(bool)<br/>    subnet_id    = optional(string)<br/>    subnet_ip    = optional(string)<br/>    firewall_ids = optional(list(string))<br/>  }))</pre> | n/a | yes |
 | <a name="input_use_network"></a> [use\_network](#input\_use\_network) | Use VPC and subnets | `bool` | `false` | no |
 
 ## Outputs
@@ -320,7 +320,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_volume_config"></a> [volume\_config](#input\_volume\_config) | Volume configuration | <pre>map(object({<br>    size = number<br>    location = string<br>    server_id = string<br>  }))</pre> | n/a | yes |
+| <a name="input_volume_config"></a> [volume\_config](#input\_volume\_config) | Volume configuration | <pre>map(object({<br/>    size = number<br/>    location = string<br/>    server_id = string<br/>  }))</pre> | n/a | yes |
 | <a name="input_volume_format"></a> [volume\_format](#input\_volume\_format) | Format volume after creation (xfs or ext4) | `string` | `"xfs"` | no |
 
 ## Outputs

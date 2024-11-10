@@ -28,7 +28,7 @@ No modules.
 | <a name="input_firewall_ids"></a> [firewall\_ids](#input\_firewall\_ids) | Firewall IDs to pass to the server | `list(string)` | `null` | no |
 | <a name="input_hcloud_ssh_key_id"></a> [hcloud\_ssh\_key\_id](#input\_hcloud\_ssh\_key\_id) | ID of the SSH key created and used for Hetzner cloud and serves | `list(string)` | n/a | yes |
 | <a name="input_os_type"></a> [os\_type](#input\_os\_type) | OS image to use for the server | `string` | `"debian-12"` | no |
-| <a name="input_server_config"></a> [server\_config](#input\_server\_config) | Config for each created server | <pre>map(object({<br>    location     = string<br>    server_type  = string<br>    labels       = optional(map(string))<br>    ipv4_enabled = optional(bool)<br>    ipv6_enabled = optional(bool)<br>    subnet_id    = optional(string)<br>    subnet_ip    = optional(string)<br>    firewall_ids = optional(list(string))<br>  }))</pre> | n/a | yes |
+| <a name="input_server_config"></a> [server\_config](#input\_server\_config) | Config for each created server | <pre>map(object({<br/>    location     = string<br/>    server_type  = string<br/>    labels       = optional(map(string))<br/>    ipv4_enabled = optional(bool)<br/>    ipv6_enabled = optional(bool)<br/>    subnet_id    = optional(string)<br/>    subnet_ip    = optional(string)<br/>    firewall_ids = optional(list(string))<br/>  }))</pre> | n/a | yes |
 | <a name="input_use_network"></a> [use\_network](#input\_use\_network) | Use VPC and subnets | `bool` | `false` | no |
 
 ## Outputs

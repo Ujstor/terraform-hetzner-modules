@@ -55,3 +55,23 @@ resource "hcloud_load_balancer_network" "serve_network" {
   subnet_id        = each.value.network.subnet_id
   ip               = each.value.network.ip
 }
+
+# Load balancer service
+resource "hcloud_load_balancer_service" "load_balancer_service" {
+  for_each = {
+    for idx, item in flatten([
+      for lb_key, lb in var.lb_config : lb.load_balancer_service != null ? [
+        {
+          key     = lb_key
+          service = lb.load_balancer_service
+          lb_key  = lb_key
+        }
+      ] : []
+    ]) : idx => item
+  }
+
+  load_balancer_id = hcloud_load_balancer.lb[each.value.lb_key].id
+  protocol         = each.value.service.protocol
+  listen_port      = each.value.service.listen_port
+  destination_port = each.value.service.destination_port
+}

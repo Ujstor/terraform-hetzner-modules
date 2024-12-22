@@ -24,7 +24,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cloudflare_record"></a> [cloudflare\_record](#input\_cloudflare\_record) | Cloudflare record configuration | <pre>map(object({<br/>    zone_id = string<br/>    name    = string<br/>    content = string<br/>    type    = string<br/>    ttl     = number<br/>    proxied = bool<br/>  }))</pre> | n/a | yes |
+| <a name="input_cloudflare_record"></a> [cloudflare\_record](#input\_cloudflare\_record) | Cloudflare record configuration | <pre>map(object({<br>    zone_id = string<br>    name    = string<br>    content = string<br>    type    = string<br>    ttl     = optional(number)<br>    proxied = optional(bool)<br>  }))</pre> | n/a | yes |
 
 ## Outputs
 

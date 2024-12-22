@@ -5,7 +5,7 @@ variable "cloudflare_record" {
     name    = string
     content = string
     type    = string
-    ttl     = number
-    proxied = bool
+    ttl     = optional(number)
+    proxied = optional(bool)
   }))
 }

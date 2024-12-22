@@ -20,5 +20,11 @@ variable "lb_config" {
       subnet_id  = optional(string)
       ip         = optional(string) #subnet ip
     }))
+    load_balancer_service = optional(object({
+      service_id       = optional(string)
+      protocol         = optional(string)
+      listen_port      = optional(number)
+      destination_port = optional(number)
+    }))
   }))
 }

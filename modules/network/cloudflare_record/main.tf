@@ -1,4 +1,4 @@
-resource "cloudflare_record" "domain_recorda" {
+resource "cloudflare_dns_record" "domain_recorda" {
   for_each = var.cloudflare_record
 
   zone_id  = each.value.zone_id

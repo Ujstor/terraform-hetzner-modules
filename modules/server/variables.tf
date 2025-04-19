@@ -8,7 +8,9 @@ variable "server_config" {
     ipv6_enabled = optional(bool)
     subnet_id    = optional(string)
     subnet_ip    = optional(string)
+    alias_ips    = optional(list(string))
     firewall_ids = optional(list(string))
+    backups      = optional(bool)
   }))
 }
 

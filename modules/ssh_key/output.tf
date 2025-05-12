@@ -3,6 +3,11 @@ output "public_key" {
   value       = tls_private_key.ssh_key.public_key_openssh
 }
 
+output "private_key" {
+  description = "Private key"
+  value       = tls_private_key.ssh_key.private_key_openssh
+}
+
 output "hcloud_ssh_key_id" {
   description = "Pass Hcloud ssh key id into server"
   value       = hcloud_ssh_key.default.id

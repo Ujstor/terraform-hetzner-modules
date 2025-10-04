@@ -1,16 +1,18 @@
 variable "server_config" {
   description = "Config for each created server"
   type = map(object({
-    location     = string
-    server_type  = string
-    labels       = optional(map(string))
-    ipv4_enabled = optional(bool)
-    ipv6_enabled = optional(bool)
-    subnet_id    = optional(string)
-    subnet_ip    = optional(string)
-    alias_ips    = optional(list(string))
-    firewall_ids = optional(list(string))
-    backups      = optional(bool)
+    location           = string
+    server_type        = string
+    labels             = optional(map(string))
+    ipv4_enabled       = optional(bool)
+    ipv6_enabled       = optional(bool)
+    subnet_id          = optional(string)
+    subnet_ip          = optional(string)
+    alias_ips          = optional(list(string))
+    firewall_ids       = optional(list(string))
+    backups            = optional(bool)
+    delete_protection  = optional(bool)
+    rebuild_protection = optional(bool)
   }))
 }
 

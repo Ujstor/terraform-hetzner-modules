@@ -9,6 +9,9 @@ resource "hcloud_server" "server" {
   firewall_ids = var.firewall_ids
   backups      = each.value.backups
 
+  delete_protection  = each.value.delete_protection
+  rebuild_protection = each.value.rebuild_protection
+
   labels = each.value.labels
 
   public_net {

@@ -75,7 +75,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cloudflare_record"></a> [cloudflare\_record](#input\_cloudflare\_record) | Cloudflare record configuration | <pre>map(object({<br>    zone_id  = string<br>    name     = string<br>    content  = optional(string)<br>    type     = string<br>    ttl      = optional(number)<br>    proxied  = optional(bool)<br>    priority = optional(number)<br>    data = optional(object({<br>      priority = optional(number)<br>      weight   = optional(number)<br>      port     = optional(number)<br>      target   = optional(string)<br>      service  = optional(string)<br>      proto    = optional(string)<br>      name     = optional(string)<br>    }))<br>  }))</pre> | n/a | yes |
+| <a name="input_cloudflare_record"></a> [cloudflare\_record](#input\_cloudflare\_record) | Cloudflare record configuration | <pre>map(object({<br>    zone_id  = string<br>    name     = string<br>    content  = optional(string)<br>    type     = string<br>    ttl      = optional(number)<br>    proxied  = optional(bool)<br>    priority = optional(number)<br>    data     = optional(map(any))<br>  }))</pre> | n/a | yes |
 
 ## Outputs
 

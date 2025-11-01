@@ -8,14 +8,6 @@ variable "cloudflare_record" {
     ttl      = optional(number)
     proxied  = optional(bool)
     priority = optional(number)
-    data = optional(object({
-      priority = optional(number)
-      weight   = optional(number)
-      port     = optional(number)
-      target   = optional(string)
-      service  = optional(string)
-      proto    = optional(string)
-      name     = optional(string)
-    }))
+    data     = optional(map(any))
   }))
 }

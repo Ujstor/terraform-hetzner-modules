@@ -8,17 +8,5 @@ resource "cloudflare_dns_record" "domain_recorda" {
   ttl      = each.value.ttl
   proxied  = each.value.proxied
   priority = each.value.priority
-
-  dynamic "data" {
-    for_each = each.value.data != null ? [each.value.data] : []
-    content {
-      priority = data.value.priority
-      weight   = data.value.weight
-      port     = data.value.port
-      target   = data.value.target
-      service  = data.value.service
-      proto    = data.value.proto
-      name     = data.value.name
-    }
-  }
+  data     = each.value.data
 }

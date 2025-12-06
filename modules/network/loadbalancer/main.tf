@@ -17,6 +17,7 @@ resource "hcloud_load_balancer" "lb" {
 }
 
 # Load balancer targets (now supports multiple targets per LB)
+# When use_private_ip is true, the LB must be attached to a network first
 resource "hcloud_load_balancer_target" "load_balancer_target" {
   for_each = {
     for item in flatten([
@@ -36,6 +37,9 @@ resource "hcloud_load_balancer_target" "load_balancer_target" {
   label_selector   = each.value.target.label_selector
   ip               = each.value.target.ip
   use_private_ip   = each.value.target.use_private_ip
+
+  # Must wait for network attachment when using private IPs
+  depends_on = [hcloud_load_balancer_network.serve_network]
 }
 
 # Load balancer network

@@ -131,9 +131,34 @@ module "load_balancer" {
       name               = "k8s-api-lb"
       load_balancer_type = "lb11"
       network_zone       = module.vpc_subnets.subnet_id.subnet-1.network_zone
+      labels = {
+        purpose = "k8s-api"
+      }
       load_balancer_network = {
         subnet_id = module.vpc_subnets.subnet_id.subnet-1.subnet_id
+        ip        = "10.0.1.100"
       }
+      load_balancer_targets = [
+        {
+          type           = "label_selector"
+          label_selector = "control_plane=true"
+          use_private_ip = true
+        }
+      ]
+      load_balancer_service = [
+        {
+          protocol         = "tcp"
+          listen_port      = 6443
+          destination_port = 6443
+          health_check = {
+            protocol = "tcp"
+            port     = 6443
+            interval = 15
+            timeout  = 10
+            retries  = 3
+          }
+        }
+      ]
     }
   }
   depends_on = [module.vpc_subnets, module.servers]

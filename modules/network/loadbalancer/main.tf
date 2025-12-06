@@ -15,19 +15,20 @@ resource "hcloud_load_balancer" "lb" {
   }
 }
 
-# Load balancer targets
+# Load balancer targets (now supports multiple targets per LB)
 resource "hcloud_load_balancer_target" "load_balancer_target" {
   for_each = {
-    for idx, item in flatten([
-      for lb_key, lb in var.lb_config : lb.load_balancer_targets != null ? [
-        {
-          key    = lb_key
-          target = lb.load_balancer_targets
+    for item in flatten([
+      for lb_key, lb in var.lb_config : [
+        for idx, target in coalesce(lb.load_balancer_targets, []) : {
+          key    = "${lb_key}-${idx}"
+          target = target
           lb_key = lb_key
         }
-      ] : []
-    ]) : idx => item
+      ]
+    ]) : item.key => item
   }
+
   type             = each.value.target.type
   load_balancer_id = hcloud_load_balancer.lb[each.value.lb_key].id
   server_id        = each.value.target.server_id
@@ -39,39 +40,67 @@ resource "hcloud_load_balancer_target" "load_balancer_target" {
 # Load balancer network
 resource "hcloud_load_balancer_network" "serve_network" {
   for_each = {
-    for idx, item in flatten([
-      for lb_key, lb in var.lb_config : lb.load_balancer_network != null ? [
-        {
-          key     = lb_key
-          network = lb.load_balancer_network
-          lb_key  = lb_key
-        }
-      ] : []
-    ]) : idx => item
+    for lb_key, lb in var.lb_config : lb_key => lb.load_balancer_network
+    if lb.load_balancer_network != null
   }
 
-  load_balancer_id = hcloud_load_balancer.lb[each.value.lb_key].id
-  network_id       = each.value.network.network_id
-  subnet_id        = each.value.network.subnet_id
-  ip               = each.value.network.ip
+  load_balancer_id        = hcloud_load_balancer.lb[each.key].id
+  network_id              = each.value.network_id
+  subnet_id               = each.value.subnet_id
+  ip                      = each.value.ip
+  enable_public_interface = each.value.enable_public_interface
 }
 
-# Load balancer service
+# Load balancer service (now supports multiple services per LB with health checks)
 resource "hcloud_load_balancer_service" "load_balancer_service" {
   for_each = {
-    for idx, item in flatten([
-      for lb_key, lb in var.lb_config : lb.load_balancer_service != null ? [
-        {
-          key     = lb_key
-          service = lb.load_balancer_service
+    for item in flatten([
+      for lb_key, lb in var.lb_config : [
+        for idx, service in coalesce(lb.load_balancer_service, []) : {
+          key     = "${lb_key}-${idx}"
+          service = service
           lb_key  = lb_key
         }
-      ] : []
-    ]) : idx => item
+      ]
+    ]) : item.key => item
   }
 
   load_balancer_id = hcloud_load_balancer.lb[each.value.lb_key].id
   protocol         = each.value.service.protocol
   listen_port      = each.value.service.listen_port
   destination_port = each.value.service.destination_port
+  proxyprotocol    = each.value.service.proxyprotocol
+
+  dynamic "health_check" {
+    for_each = each.value.service.health_check != null ? [each.value.service.health_check] : []
+    content {
+      protocol = health_check.value.protocol
+      port     = health_check.value.port
+      interval = health_check.value.interval
+      timeout  = health_check.value.timeout
+      retries  = health_check.value.retries
+
+      dynamic "http" {
+        for_each = health_check.value.http != null ? [health_check.value.http] : []
+        content {
+          domain       = http.value.domain
+          path         = http.value.path
+          response     = http.value.response
+          tls          = http.value.tls
+          status_codes = http.value.status_codes
+        }
+      }
+    }
+  }
+
+  dynamic "http" {
+    for_each = each.value.service.http != null ? [each.value.service.http] : []
+    content {
+      sticky_sessions = http.value.sticky_sessions
+      cookie_name     = http.value.cookie_name
+      cookie_lifetime = http.value.cookie_lifetime
+      certificates    = http.value.certificates
+      redirect_http   = http.value.redirect_http
+    }
+  }
 }

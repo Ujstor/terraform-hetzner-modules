@@ -3,11 +3,14 @@ variable "lb_config" {
   type = map(object({
     name               = string
     load_balancer_type = string
-    network_zone       = optional(string)
-    location           = optional(string) #Require when no network_zone is set
-    delete_protection  = optional(bool, false)
-    algorithm          = optional(object({ type = string }))
-    labels             = optional(map(string))
+    # network_zone and location are mutually exclusive - use one or the other
+    # network_zone: LB placed in any location within the zone (e.g., "eu-central")
+    # location: LB placed in specific datacenter (e.g., "fsn1", "nbg1", "hel1")
+    network_zone      = optional(string) #e.g., "eu-central" - use when location flexibility is ok
+    location          = optional(string) #e.g., "fsn1" - use when specific datacenter is required
+    delete_protection = optional(bool, false)
+    algorithm         = optional(object({ type = string }))
+    labels            = optional(map(string))
     load_balancer_targets = optional(list(object({
       type           = string           #server, label_selector, ip
       server_id      = optional(string) #if type server

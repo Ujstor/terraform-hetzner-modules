@@ -1,8 +1,9 @@
 variable "vpc_config" {
   description = "VPC Configuration"
   type = object({
-    vpc_name     = string
-    vpc_ip_range = string
+    vpc_name          = string
+    vpc_ip_range      = string
+    delete_protection = optional(bool, false)
   })
 }
 

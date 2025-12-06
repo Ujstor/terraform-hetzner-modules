@@ -1,10 +1,11 @@
 resource "hcloud_volume" "vol" {
   for_each = var.volume_config
 
-  name     = each.key
-  size     = each.value.size
-  location = each.value.location
-  format   = var.volume_format
+  name              = each.key
+  size              = each.value.size
+  location          = each.value.location
+  format            = var.volume_format
+  delete_protection = each.value.delete_protection
 }
 
 resource "hcloud_volume_attachment" "vol_attachment" {

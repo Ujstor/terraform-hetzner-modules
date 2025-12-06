@@ -5,6 +5,7 @@ resource "hcloud_load_balancer" "lb" {
   load_balancer_type = each.value.load_balancer_type
   network_zone       = each.value.network_zone
   location           = each.value.location
+  delete_protection  = each.value.delete_protection
   labels             = each.value.labels
 
   dynamic "algorithm" {

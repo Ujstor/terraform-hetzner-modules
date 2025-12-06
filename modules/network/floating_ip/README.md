@@ -25,7 +25,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_floating_ip_config"></a> [floating\_ip\_config](#input\_floating\_ip\_config) | Floating IP configuration | <pre>map(object({<br>    server_id       = string<br>    server_location = string<br>  }))</pre> | n/a | yes |
+| <a name="input_floating_ip_config"></a> [floating\_ip\_config](#input\_floating\_ip\_config) | Floating IP configuration | <pre>map(object({<br>    server_id         = string<br>    server_location   = string<br>    delete_protection = optional(bool, false)<br>  }))</pre> | n/a | yes |
 | <a name="input_ip_type"></a> [ip\_type](#input\_ip\_type) | Type of IP address | `string` | `"ipv4"` | no |
 
 ## Outputs

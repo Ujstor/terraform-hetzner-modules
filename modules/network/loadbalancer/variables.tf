@@ -5,6 +5,7 @@ variable "lb_config" {
     load_balancer_type = string
     network_zone       = optional(string)
     location           = optional(string) #Require when no network_zone is set
+    delete_protection  = optional(bool, false)
     algorithm          = optional(object({ type = string }))
     labels             = optional(map(string))
     load_balancer_targets = optional(list(object({

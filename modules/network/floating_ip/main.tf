@@ -1,8 +1,9 @@
 resource "hcloud_floating_ip" "main" {
   for_each = var.floating_ip_config
 
-  type          = var.ip_type
-  home_location = each.value.server_location
+  type              = var.ip_type
+  home_location     = each.value.server_location
+  delete_protection = each.value.delete_protection
 }
 
 resource "hcloud_floating_ip_assignment" "main" {

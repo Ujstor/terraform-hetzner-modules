@@ -9,7 +9,7 @@ Modules for simplifying the creation of resources on Hetzner Cloud and Cloudflar
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | ~> 4.37 |
+| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | ~> 5.0 |
 | <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | ~> 1.47 |
 | <a name="requirement_tls"></a> [tls](#requirement\_tls) | ~> 4.0 |
 
@@ -53,13 +53,13 @@ No resources.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | ~> 4.37 |
+| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | ~> 5.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_cloudflare"></a> [cloudflare](#provider\_cloudflare) | ~> 4.37 |
+| <a name="provider_cloudflare"></a> [cloudflare](#provider\_cloudflare) | ~> 5.0 |
 
 ## Modules
 
@@ -69,13 +69,13 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [cloudflare_record.domain_recorda](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record) | resource |
+| [cloudflare_dns_record.domain_recorda](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/dns_record) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cloudflare_record"></a> [cloudflare\_record](#input\_cloudflare\_record) | Cloudflare record configuration | <pre>map(object({<br>    zone_id  = string<br>    name     = string<br>    content  = string<br>    type     = string<br>    ttl      = optional(number)<br>    proxied  = optional(bool)<br>    priority = optional(number)<br>  }))</pre> | n/a | yes |
+| <a name="input_cloudflare_record"></a> [cloudflare\_record](#input\_cloudflare\_record) | Cloudflare record configuration | <pre>map(object({<br>    zone_id  = string<br>    name     = string<br>    content  = optional(string)<br>    type     = string<br>    ttl      = optional(number)<br>    proxied  = optional(bool)<br>    priority = optional(number)<br>    data     = optional(map(any))<br>  }))</pre> | n/a | yes |
 
 ## Outputs
 
@@ -151,7 +151,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_floating_ip_config"></a> [floating\_ip\_config](#input\_floating\_ip\_config) | Floating IP configuration | <pre>map(object({<br>    server_id       = string<br>    server_location = string<br>  }))</pre> | n/a | yes |
+| <a name="input_floating_ip_config"></a> [floating\_ip\_config](#input\_floating\_ip\_config) | Floating IP configuration | <pre>map(object({<br>    server_id         = string<br>    server_location   = string<br>    delete_protection = optional(bool, false)<br>  }))</pre> | n/a | yes |
 | <a name="input_ip_type"></a> [ip\_type](#input\_ip\_type) | Type of IP address | `string` | `"ipv4"` | no |
 
 ## Outputs
@@ -193,13 +193,13 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_lb_config"></a> [lb\_config](#input\_lb\_config) | Load balancer configuration. | <pre>map(object({<br>    name               = string<br>    load_balancer_type = string<br>    network_zone       = optional(string)<br>    location           = optional(string) #Require when no network_zone is set<br>    algorithm          = optional(object({ type = string }))<br>    labels             = optional(map(string))<br>    load_balancer_targets = optional(object({<br>      type           = string           #server, label_selector, ip<br>      server_id      = optional(string) #if type server<br>      label_selector = optional(string)<br>      ip             = optional(string) #if type ip<br>      use_private_ip = optional(bool)   #if type server or label_selector<br>    }))<br>    load_balancer_network = optional(object({<br>      #Use depends_on to make sure the network is created before the load balancer<br>      network_id = optional(string) #or network id or subnet id<br>      subnet_id  = optional(string)<br>      ip         = optional(string) #subnet ip<br>    }))<br>    load_balancer_service = optional(object({<br>      service_id       = optional(string)<br>      protocol         = optional(string)<br>      listen_port      = optional(number)<br>      destination_port = optional(number)<br>    }))<br>  }))</pre> | n/a | yes |
+| <a name="input_lb_config"></a> [lb\_config](#input\_lb\_config) | Load balancer configuration. | <pre>map(object({<br>    name               = string<br>    load_balancer_type = string<br>    network_zone       = optional(string)<br>    location           = optional(string) #Require when no network_zone is set<br>    delete_protection  = optional(bool, false)<br>    algorithm          = optional(object({ type = string }))<br>    labels             = optional(map(string))<br>    load_balancer_targets = optional(list(object({<br>      type           = string           #server, label_selector, ip<br>      server_id      = optional(string) #if type server<br>      label_selector = optional(string)<br>      ip             = optional(string) #if type ip<br>      use_private_ip = optional(bool)   #if type server or label_selector<br>    })))<br>    load_balancer_network = optional(object({<br>      #Use depends_on to make sure the network is created before the load balancer<br>      network_id              = optional(string)       #or network id or subnet id<br>      subnet_id               = optional(string)<br>      ip                      = optional(string)       #subnet ip<br>      enable_public_interface = optional(bool, true)   #disable public interface for private-only LB<br>    }))<br>    load_balancer_service = optional(list(object({<br>      protocol         = optional(string)<br>      listen_port      = optional(number)<br>      destination_port = optional(number)<br>      proxyprotocol    = optional(bool)<br>      health_check = optional(object({<br>        protocol = string                              #http, https, tcp<br>        port     = number<br>        interval = optional(number, 15)                #seconds<br>        timeout  = optional(number, 10)                #seconds<br>        retries  = optional(number, 3)<br>        http = optional(object({<br>          domain       = optional(string)<br>          path         = optional(string, "/")<br>          response     = optional(string)<br>          tls          = optional(bool)<br>          status_codes = optional(list(string), ["2??", "3??"])<br>        }))<br>      }))<br>      http = optional(object({<br>        sticky_sessions = optional(bool)<br>        cookie_name     = optional(string)<br>        cookie_lifetime = optional(number)<br>        certificates    = optional(list(string))<br>        redirect_http   = optional(bool)<br>      }))<br>    })))<br>  }))</pre> | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_lb_status"></a> [lb\_status](#output\_lb\_status) | n/a |
+| <a name="output_lb_status"></a> [lb\_status](#output\_lb\_status) | Load balancer status including public and private IPs |
 
 ![purple-divider](https://user-images.githubusercontent.com/7065401/52071927-c1cd7100-2562-11e9-908a-dde91ba14e59.png)
 
@@ -235,7 +235,7 @@ No modules.
 | <a name="input_network_type"></a> [network\_type](#input\_network\_type) | Network Type | `string` | `"cloud"` | no |
 | <a name="input_network_zone"></a> [network\_zone](#input\_network\_zone) | Network Zone | `string` | `"eu-central"` | no |
 | <a name="input_subnet_config"></a> [subnet\_config](#input\_subnet\_config) | Subnet Configuration | <pre>map(object({<br>    subnet_ip_range = string<br>  }))</pre> | n/a | yes |
-| <a name="input_vpc_config"></a> [vpc\_config](#input\_vpc\_config) | VPC Configuration | <pre>object({<br>    vpc_name     = string<br>    vpc_ip_range = string<br>  })</pre> | n/a | yes |
+| <a name="input_vpc_config"></a> [vpc\_config](#input\_vpc\_config) | VPC Configuration | <pre>object({<br>    vpc_name          = string<br>    vpc_ip_range      = string<br>    delete_protection = optional(bool, false)<br>  })</pre> | n/a | yes |
 
 ## Outputs
 
@@ -278,7 +278,7 @@ No modules.
 | <a name="input_firewall_ids"></a> [firewall\_ids](#input\_firewall\_ids) | Firewall IDs to pass to the server | `list(string)` | `null` | no |
 | <a name="input_hcloud_ssh_key_id"></a> [hcloud\_ssh\_key\_id](#input\_hcloud\_ssh\_key\_id) | ID of the SSH key created and used for Hetzner cloud and serves | `list(string)` | n/a | yes |
 | <a name="input_os_type"></a> [os\_type](#input\_os\_type) | OS image to use for the server | `string` | `"debian-12"` | no |
-| <a name="input_server_config"></a> [server\_config](#input\_server\_config) | Config for each created server | <pre>map(object({<br>    location     = string<br>    server_type  = string<br>    labels       = optional(map(string))<br>    ipv4_enabled = optional(bool)<br>    ipv6_enabled = optional(bool)<br>    subnet_id    = optional(string)<br>    subnet_ip    = optional(string)<br>    firewall_ids = optional(list(string))<br>  }))</pre> | n/a | yes |
+| <a name="input_server_config"></a> [server\_config](#input\_server\_config) | Config for each created server | <pre>map(object({<br>    location           = string<br>    server_type        = string<br>    labels             = optional(map(string))<br>    ipv4_enabled       = optional(bool)<br>    ipv6_enabled       = optional(bool)<br>    subnet_id          = optional(string)<br>    subnet_ip          = optional(string)<br>    alias_ips          = optional(list(string))<br>    firewall_ids       = optional(list(string))<br>    backups            = optional(bool)<br>    delete_protection  = optional(bool)<br>    rebuild_protection = optional(bool)<br>  }))</pre> | n/a | yes |
 | <a name="input_use_network"></a> [use\_network](#input\_use\_network) | Use VPC and subnets | `bool` | `false` | no |
 
 ## Outputs
@@ -321,13 +321,13 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_ssh_key_name"></a> [ssh\_key\_name](#input\_ssh\_key\_name) | Name of the SSH key created and used for Hetzner cloud and serves | `string` | `"hetzner_ssh_key"` | no |
-| <a name="input_ssh_key_path"></a> [ssh\_key\_path](#input\_ssh\_key\_path) | Path where the SSH key is stored | `string` | `"~/.ssh"` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_hcloud_ssh_key_id"></a> [hcloud\_ssh\_key\_id](#output\_hcloud\_ssh\_key\_id) | Pass Hcloud ssh key id into server |
+| <a name="output_private_key"></a> [private\_key](#output\_private\_key) | Private key |
 | <a name="output_public_key"></a> [public\_key](#output\_public\_key) | Public key |
 
 ![purple-divider](https://user-images.githubusercontent.com/7065401/52071927-c1cd7100-2562-11e9-908a-dde91ba14e59.png)
@@ -361,7 +361,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_volume_config"></a> [volume\_config](#input\_volume\_config) | Volume configuration | <pre>map(object({<br>    size = number<br>    location = string<br>    server_id = string<br>  }))</pre> | n/a | yes |
+| <a name="input_volume_config"></a> [volume\_config](#input\_volume\_config) | Volume configuration | <pre>map(object({<br>    size              = number<br>    location          = string<br>    server_id         = string<br>    delete_protection = optional(bool, false)<br>  }))</pre> | n/a | yes |
 | <a name="input_volume_format"></a> [volume\_format](#input\_volume\_format) | Format volume after creation (xfs or ext4) | `string` | `"xfs"` | no |
 
 ## Outputs

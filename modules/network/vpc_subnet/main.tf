@@ -1,6 +1,7 @@
 resource "hcloud_network" "network" {
-  name     = var.vpc_config.vpc_name
-  ip_range = var.vpc_config.vpc_ip_range
+  name              = var.vpc_config.vpc_name
+  ip_range          = var.vpc_config.vpc_ip_range
+  delete_protection = var.vpc_config.delete_protection
 }
 
 resource "hcloud_network_subnet" "deployment_subnet" {

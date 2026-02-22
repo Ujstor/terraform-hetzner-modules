@@ -1,4 +1,4 @@
-resource "cloudflare_record" "domain_recorda" {
+resource "cloudflare_dns_record" "domain_recorda" {
   for_each = var.cloudflare_record
 
   zone_id  = each.value.zone_id
@@ -8,4 +8,5 @@ resource "cloudflare_record" "domain_recorda" {
   ttl      = each.value.ttl
   proxied  = each.value.proxied
   priority = each.value.priority
+  data     = each.value.data
 }

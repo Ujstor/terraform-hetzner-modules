@@ -7,6 +7,10 @@ resource "hcloud_server" "server" {
   location     = each.value.location
   ssh_keys     = var.hcloud_ssh_key_id
   firewall_ids = var.firewall_ids
+  backups      = each.value.backups
+
+  delete_protection  = each.value.delete_protection
+  rebuild_protection = each.value.rebuild_protection
 
   labels = each.value.labels
 
@@ -22,4 +26,5 @@ resource "hcloud_server_network" "subnet_controler" {
   server_id = hcloud_server.server[each.key].id
   subnet_id = each.value.subnet_id
   ip        = each.value.subnet_ip
+  alias_ips = each.value.alias_ips
 }
